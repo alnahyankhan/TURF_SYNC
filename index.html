@@ -430,9 +430,11 @@
         <!-- Sample clickable booking test chips -->
         <div class="mt-3 flex flex-wrap items-center gap-2 text-[11px] text-slate-400">
           <span class="font-bold text-slate-300">Quick Test Bookings:</span>
-          <button onclick="quickFillDeskLookup('TRF-202610-101')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-400 font-mono font-bold rounded-lg border border-slate-700 transition-all cursor-pointer">TRF-202610-101 (Ground A • ৳1,680 Due)</button>
-          <button onclick="quickFillDeskLookup('TRF-202610-102')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-400 font-mono font-bold rounded-lg border border-slate-700 transition-all cursor-pointer">TRF-202610-102 (Ground B • ৳2,700 Due)</button>
-          <button onclick="quickFillDeskLookup('TRF-202610-841')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-teal-400 font-mono font-bold rounded-lg border border-slate-700 transition-all cursor-pointer">TRF-202610-841 (Badminton • Fully Paid)</button>
+          <div id="desk-quick-test-chips" class="inline-flex flex-wrap items-center gap-2">
+            <button onclick="quickFillDeskLookup('TRF-202610-101')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-400 font-mono font-bold rounded-lg border border-slate-700 transition-all cursor-pointer">TRF-202610-101 (Ground A • ৳1,680 Due)</button>
+            <button onclick="quickFillDeskLookup('TRF-202610-102')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-400 font-mono font-bold rounded-lg border border-slate-700 transition-all cursor-pointer">TRF-202610-102 (Ground B • ৳2,700 Due)</button>
+            <button onclick="quickFillDeskLookup('TRF-202610-841')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-teal-400 font-mono font-bold rounded-lg border border-slate-700 transition-all cursor-pointer">TRF-202610-841 (Badminton • Fully Paid)</button>
+          </div>
         </div>
       </div>
 
@@ -445,11 +447,11 @@
       <div class="bg-slate-900/80 rounded-3xl border border-slate-800 p-6 shadow-xl">
         <div class="flex items-center justify-between pb-4 border-b border-slate-800">
           <div>
-            <h4 class="text-base font-bold text-white flex items-center gap-2">
+            <h4 class="text-base font-bold text-white flex items-center gap-2" id="desk-queue-header-title">
               <i data-lucide="clock" class="w-5 h-5 text-emerald-400"></i>
-              Today's Match Arrival & Check-In Queue
+              Match Arrival & Check-In Queue
             </h4>
-            <p class="text-xs text-slate-400 mt-0.5">Live list of reserved slots across all grounds for the current operating shift.</p>
+            <p class="text-xs text-slate-400 mt-0.5" id="desk-queue-header-sub">Live list of reserved slots across all grounds for the current operating shift.</p>
           </div>
           <span class="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full" id="desk-queue-count-badge">3 Bookings Pending</span>
         </div>
@@ -614,7 +616,41 @@
           </div>
         </div>
 
-        <div class="mt-6 overflow-x-auto">
+        <!-- Live Shift Financials Bar for Active Schedule Date -->
+        <div id="turf-shift-financial-bar" class="mt-4 p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex flex-wrap items-center justify-between gap-3 shadow-inner">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+              <i data-lucide="coins" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white flex items-center gap-2">
+                <span>Shift Financial Summary:</span>
+                <span id="shift-fin-date-label" class="text-emerald-400 font-mono bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-lg">14 Oct 2026</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-0.5" id="shift-fin-sublabel">Live revenue breakdown for active ground & calendar date.</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-mono">
+            <div class="bg-slate-900/90 px-3 py-1.5 rounded-xl border border-slate-800">
+              <span class="text-[9px] text-slate-400 block font-sans uppercase font-bold tracking-wider">Booked Slots</span>
+              <span id="shift-fin-booked-count" class="font-bold text-white text-xs">2 / 16 (12%)</span>
+            </div>
+            <div class="bg-slate-900/90 px-3 py-1.5 rounded-xl border border-slate-800">
+              <span class="text-[9px] text-slate-400 block font-sans uppercase font-bold tracking-wider">Gross Revenue</span>
+              <span id="shift-fin-gross" class="font-bold text-white text-xs">৳5,600</span>
+            </div>
+            <div class="bg-slate-900/90 px-3 py-1.5 rounded-xl border border-slate-800">
+              <span class="text-[9px] text-emerald-400/80 block font-sans uppercase font-bold tracking-wider">Online Advance</span>
+              <span id="shift-fin-advance" class="font-bold text-emerald-400 text-xs">৳4,320</span>
+            </div>
+            <div class="bg-slate-900/90 px-3 py-1.5 rounded-xl border border-slate-800">
+              <span class="text-[9px] text-amber-400/80 block font-sans uppercase font-bold tracking-wider">Counter Due</span>
+              <span id="shift-fin-due" class="font-bold text-amber-400 text-xs">৳1,680</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 overflow-x-auto">
           <table class="w-full text-xs text-left">
             <thead>
               <tr class="text-[10px] text-slate-400 uppercase tracking-wider border-b border-slate-800">
@@ -790,27 +826,45 @@
     <!-- TURF SUBTAB 4: TURF FINANCIAL REPORTS & ANALYTICS -->
     <div id="turf-content-analytics" class="hidden space-y-6">
       
+      <!-- Analytics Header with Active Date Badge -->
+      <div class="bg-slate-900/90 p-5 rounded-3xl border border-slate-800 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h4 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="bar-chart-3" class="w-5 h-5 text-emerald-400"></i>
+            Turf Financial Ledger & Revenue Reconciliation
+          </h4>
+          <p class="text-xs text-slate-400 mt-0.5">Real-time revenue metrics calculated dynamically for the active operating schedule.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-slate-400 font-medium">Selected Date:</span>
+          <span id="turf-analytics-date-badge" class="px-3 py-1 rounded-xl text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-1.5">
+            <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+            <span id="turf-analytics-date-text">14 Oct 2026</span>
+          </span>
+        </div>
+      </div>
+
       <!-- Turf Financial Metrics -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
           <div class="text-[11px] font-semibold text-slate-400 uppercase">Gross Slot Revenue</div>
-          <div class="text-3xl font-black font-mono text-white mt-1">৳148,000</div>
-          <div class="text-[10px] text-slate-400 mt-1">Total booked slots value</div>
+          <div class="text-3xl font-black font-mono text-white mt-1" id="turf-analytics-gross">৳148,000</div>
+          <div class="text-[10px] text-slate-400 mt-1" id="turf-analytics-gross-sub">Total booked slots value</div>
         </div>
         <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
           <div class="text-[11px] font-semibold text-slate-400 uppercase">Online Advance Received</div>
-          <div class="text-3xl font-black font-mono text-emerald-400 mt-1">৳59,200</div>
-          <div class="text-[10px] text-slate-400 mt-1">40% online deposits via bKash</div>
+          <div class="text-3xl font-black font-mono text-emerald-400 mt-1" id="turf-analytics-advance">৳59,200</div>
+          <div class="text-[10px] text-slate-400 mt-1" id="turf-analytics-advance-sub">40% online deposits via bKash</div>
         </div>
         <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
           <div class="text-[11px] font-semibold text-slate-400 uppercase">Counter Cash Collected</div>
-          <div class="text-3xl font-black font-mono text-amber-400 mt-1">৳84,600</div>
-          <div class="text-[10px] text-slate-400 mt-1">Dues cleared by counter shift</div>
+          <div class="text-3xl font-black font-mono text-amber-400 mt-1" id="turf-analytics-counter">৳84,600</div>
+          <div class="text-[10px] text-slate-400 mt-1" id="turf-analytics-counter-sub">Dues cleared by counter shift</div>
         </div>
         <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
-          <div class="text-[11px] font-semibold text-slate-400 uppercase">Discounts Granted</div>
-          <div class="text-3xl font-black font-mono text-rose-400 mt-1">৳4,200</div>
-          <div class="text-[10px] text-slate-400 mt-1">Forced / Promo adjustments</div>
+          <div class="text-[11px] font-semibold text-slate-400 uppercase">Net Counter Due Pending</div>
+          <div class="text-3xl font-black font-mono text-rose-400 mt-1" id="turf-analytics-dues">৳4,200</div>
+          <div class="text-[10px] text-slate-400 mt-1" id="turf-analytics-dues-sub">Awaiting arrival kickoff collection</div>
         </div>
       </div>
 
@@ -819,9 +873,9 @@
         <!-- Revenue per Capacity -->
         <div class="bg-slate-900/80 p-6 rounded-3xl border border-slate-800">
           <h4 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
-            <i data-lucide="pie-chart" class="w-4 h-4 text-emerald-400"></i> Revenue by Ground Capacity
+            <i data-lucide="pie-chart" class="w-4 h-4 text-emerald-400"></i> Revenue by Ground Capacity (<span id="turf-analytics-capacity-date">14 Oct 2026</span>)
           </h4>
-          <div class="space-y-3">
+          <div class="space-y-3" id="turf-analytics-capacity-breakdown">
             <div>
               <div class="flex justify-between text-xs mb-1">
                 <span class="text-slate-300">Ground A (5v5 • 10 Players)</span>
